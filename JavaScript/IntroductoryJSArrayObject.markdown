@@ -144,7 +144,7 @@
 7. Samples:
 
     ```
-    $keysAndValues = {};
+    keysAndValues = {};
     keysAndValues[ keys.field1 ] = values.field1value;
     keysAndValues[ keys.field2 ] = values.field2value;
     keysAndValues[ keys.field3 ] = values.field3value;
@@ -170,7 +170,6 @@
 9. Samples:
 
     ```
-    var sum = 0;
     var sum = a.reduce( function( x, y ) {
         return x + y;
     }, 0 );
@@ -179,6 +178,7 @@
     **or**
 
     ```
+    var sum = 0;
     a.forEach( function( value ) {
         sum += value;
     } );
