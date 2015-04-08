@@ -49,8 +49,6 @@ React.render(
 
 **Exercise 1**: Try make a few variations of HTML tags of your own display using JSX and React.
 
-**Exercise 2**:
-
 ## Combining JSX and JavaScript
 
 You can also grab values from JavaScript and place them in your HTML. This is done by surrounding the JavaScript expression in `{}`. For instance:
@@ -90,26 +88,57 @@ React.render(
 );
 ```
 
-**Exercise 3**: Render an unordered list `<ul>` of several items using JSX and JavaScript variables.
+**Exercise 2**: Render an unordered list `<ul>` of several items using JSX and JavaScript variables.
 
 ## Arrays in JSX
 
 In the last exercise, you probably noticed it was a bit of a pain to create multiple list items. Wouldn't it be nice if JSX would accept arrays? It turns out, it will.
 
 ```JavaScript
+var paragraphs = ['one', 'two', 'three'];
+paragraphs = paragraphs.map(function(paragraph) {
+  return <p>
+    {paragraph}
+  </p>;
+});
+var content = <div>
+  {paragraphs}
+</div>;
 
+React.render(
+  content,
+  document.body
+);
 ```
 
+Why did we need the extra `<div>` tag to make `content`? Unfortunately, while JSX itself accepts arrays, `React.render` will only accept JSX components. This is usually not a problem in practice, but does require a container `<div>` in this instance.
 
-## Building a Component
+Now, strictly speaking, even though the above code renders the paragraphs just fine, you might notice a warning about 'unique "key" prop' in your console. (Or you might not.) This means that React wants each React component inside an array like this to have a `key` property that is unique amongst all array elements. Let's fix it:
 
+```JavaScript
+var paragraphs = ['one', 'two', 'three'];
+paragraphs = paragraphs.map(function(paragraph, index) {
+  return <p key={index}>
+    {paragraph}
+  </p>;
+});
+var content = <div>
+  {paragraphs}
+</div>;
+
+React.render(
+  content,
+  document.body
+);
+```
+
+**Exercise 3**: Do exercie #2 again, except with arrays. Make sure you don't get React errors in your console!
 
 
 # Answers
 
 1. Up to you—if it displayed as you expected on the screen, you pass!
-2.
-3. Something like:
+2. Something like:
 
 ```JavaScript
 var item_one = <li>One</li>;
@@ -119,6 +148,21 @@ var list = <ul>
   {item_one}
   {item_two}
   {item_three}
+</ul>;
+
+React.render(
+  list,
+  document.body
+);
+```
+3. Something like:
+
+```JavaScript
+var items = ['One', 'Two', 'Three'].map(function(item, key) {
+  return <li key={key}>{item}</li>;
+});
+var list = <ul>
+  {items}
 </ul>;
 
 React.render(
