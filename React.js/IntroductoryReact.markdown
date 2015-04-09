@@ -366,6 +366,8 @@ React.render(
 
 **Exercise 7**: Modify the controlled input box example I gave you to (1) have no initial text and (2) prevent the user from typing the letter 'e'. (Hint: use the JavaScript `String.replace` function.)
 
+**Exercise 8**: Create a React component that renders a text box and a button. (Use a controlled text box.) When you click the button, the the current contents of the text box should be logged to the console, and the text box should be cleared.
+
 ## Passing Values from One Component to Another: Props
 
 # Answers
@@ -500,6 +502,40 @@ var InputBox = React.createClass({
 
 React.render(
   <InputBox />,
+  document.body
+);
+```
+
+**Answer 8**: Something like:
+
+```JavaScript
+var AddToDo = React.createClass({
+  getInitialState: function() {
+    return {
+      text: ''
+    };
+  },
+  updateText: function(evt) {
+    this.setState({
+      text: evt.currentTarget.value
+    });
+  },
+  clickHandler: function() {
+    console.log(this.state.text);
+    this.setState({
+      text: ''
+    }),
+  },
+  render: function() {
+    return <div>
+      <input type='text' value={this.state.text} onChange={this.updateText} />
+      <button onClick={this.clickHandler}>Add</button>
+     </div>;
+  }
+});
+
+React.render(
+  <AddToDo />,
   document.body
 );
 ```
