@@ -1,4 +1,4 @@
-# Introductory React
+# React Bit-by-Bit: An Introduction for Beginners
 
 This will provide a gradual implementation of the 'todo' application on [React's website](https://facebook.github.io/react/) (or a close approximation).
 
