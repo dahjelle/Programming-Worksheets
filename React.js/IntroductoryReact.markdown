@@ -370,6 +370,87 @@ React.render(
 
 ## Passing Values from One Component to Another: Props
 
+Since the state of one component might end up being useful in another component, React also allows you to pass data from one component to a child component using `props`. Let's use the `<Paragraphs/>` from earlier as an example.
+
+```JavaScript
+var Paragraphs = React.createClass({
+  render: function() {
+    var paragraphs = this.props.text.map(function(paragraph, index) {
+      return <p key={index}>
+        {paragraph}
+      </p>;
+    });
+    return <div>
+      {paragraphs}
+    </div>;
+  }
+});
+
+var paragraphs = ['one', 'two', 'three'];
+React.render(
+  <Paragraphs text={paragraphs} />,
+  document.body
+);
+```
+
+Here, we added a attribute to the `<Paragraphs>` JSX tag to pass the paragraph data to the component. Within the `render` method, we can access the data as `this.props.text` (where the label in `this.props.LABEL` corresponds to the attribute name in the JSX tag). You can have as many `props` as needed in a component, and [you can also validate that a component has the `props` you expect](https://facebook.github.io/react/docs/reusable-components.html).
+
+Note what this allows you to do: you can now create components that consume state from other components. For instance, here's an example that will add a new paragraph on each click.
+
+```JavaScript
+var Paragraphs = React.createClass({
+  render: function() {
+    var paragraphs = this.props.text.map(function(paragraph, index) {
+      return <p key={index}>
+        {paragraph}
+      </p>;
+    });
+    return <div>
+      {paragraphs}
+    </div>;
+  }
+});
+
+var App = React.createClass({
+  getInitialState: function() {
+    return {
+      paragraphs: ['one', 'two', 'three']
+    };
+  },
+  clickHandler: function() {
+    var paragraphs = this.state.paragraphs;
+    console.log(paragraphs);
+    paragraphs.push(paragraphs.length + 1); // changes the paragraphs array in-place
+    this.setState({
+      paragraphs: paragraphs
+    });
+  },
+  render: function() {
+    return <div onClick={this.clickHandler}>
+      <Paragraphs text={this.state.paragraphs} />
+    </div>;
+  }
+});
+
+React.render(
+  <App />,
+  document.body
+);
+```
+
+It is not uncommon to have a single top-level component contain all the state for an app, and pass pieces of it as necessary to child components that may have state of their own.
+
+**Exercise 9**: Create a simple to-do list app with multiple components, state, and props. To show the to-do list, modify the component you created in exercise 4 to accept an array of items as `props`. Modify the component you created in Exercise 8 to 1) display the to-do list component from the previous sentence, 2) pass an array of to-dos to the to-do list component, and 3) update the array of to-dos after the user clicks add.
+
+
+
+## Further Topics (not discussed here)
+
+- How to update a parent component's state from a child component.
+- [Component lifecycle](https://facebook.github.io/react/docs/component-specs.html).
+
+----
+
 # Answers
 
 **Answer 1**. Up to you—if it displayed as you expected on the screen, you pass!
@@ -524,10 +605,60 @@ var AddToDo = React.createClass({
     console.log(this.state.text);
     this.setState({
       text: ''
-    }),
+    });
   },
   render: function() {
     return <div>
+      <input type='text' value={this.state.text} onChange={this.updateText} />
+      <button onClick={this.clickHandler}>Add</button>
+     </div>;
+  }
+});
+
+React.render(
+  <AddToDo />,
+  document.body
+);
+```
+
+**Answer 9**: Something like:
+
+```JavaScript
+var List = React.createClass({
+  render: function() {
+    var items = this.props.items.map(function(item, key) {
+      return <li key={key}>{item}</li>;
+    });
+    return <ul>
+      {items}
+    </ul>;
+  }
+});
+
+var AddToDo = React.createClass({
+  getInitialState: function() {
+    return {
+      text: '',
+      items: []
+    };
+  },
+  updateText: function(evt) {
+    this.setState({
+      text: evt.currentTarget.value
+    });
+  },
+  clickHandler: function() {
+    var new_item = this.state.text;
+    var items = this.state.items;
+    items.push(new_item);
+    this.setState({
+      text: '',
+      items: items
+    });
+  },
+  render: function() {
+    return <div>
+      <List items={this.state.items} />
       <input type='text' value={this.state.text} onChange={this.updateText} />
       <button onClick={this.clickHandler}>Add</button>
      </div>;
