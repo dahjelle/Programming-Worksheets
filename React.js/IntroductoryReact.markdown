@@ -21,7 +21,7 @@ React.render(
 );
 ```
 
-`React.render` takes the "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page.
+`React.render` takes the "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page. (The differences between HTML and JSX are [documented on the React site](https://facebook.github.io/react/docs/jsx-gotchas.html).)
 
 JSX can also be assigned to variables.† In other words, we can refactor the above example to:
 
@@ -132,13 +132,112 @@ React.render(
 );
 ```
 
-**Exercise 3**: Do exercie #2 again, except with arrays. Make sure you don't get React errors in your console!
+**Exercise 3**: Do exercise #2 again, except with arrays. Make sure you don't get React errors in your console!
+
+## Embrace Modularity: Basic React Components
+
+While JSX works fairly nicely (and can be combined with all the logic ability of JavaScript to do some interesting things), it'd be nice if we could package up bits of functionality into modules or components. React lets us do this as well—basically allowing us to add our own HTML tags to the browser!
+
+For instance, let's package up the paragraphs from previously into a React component.
+
+```JavaScript
+var Paragraphs = React.createClass({
+  render: function() {
+    var paragraphs = ['one', 'two', 'three'];
+    paragraphs = paragraphs.map(function(paragraph, index) {
+      return <p key={index}>
+        {paragraph}
+      </p>;
+    });
+    return <div>
+      {paragraphs}
+    </div>;
+  }
+});
+
+React.render(
+  <Paragraphs />,
+  document.body
+);
+```
+
+In this case, we've created a component called `Paragraphs` (traditionally starting with a capital letter) with the `React.createClass` function. This function accepts an object, with a single required key of `render` whose value must be a function that returns a single JSX element (such as could be pass to `React.render`).
+
+Once we create a component, we can use it in JSX directly, as if it was an HTML tag.
+
+We can use a component inside other components.
+
+```JavaScript
+var Paragraphs = React.createClass({
+  render: function() {
+    var paragraphs = ['one', 'two', 'three'];
+    paragraphs = paragraphs.map(function(paragraph, index) {
+      return <p key={index}>
+        {paragraph}
+      </p>;
+    });
+    return <div>
+      {paragraphs}
+    </div>;
+  }
+});
+
+var MoreOfThem = React.createClass({
+  render: function() {
+    return <div>
+      <Paragraphs />
+      <Paragraphs />
+      <Paragraphs />
+    </div>;
+  }
+})
+
+React.render(
+  <MoreOfThem />,
+  document.body
+);
+```
+
+If you are using a build tool like `browserify`, you can also stick your components in other files.
+
+```JavaScript
+// Paragraphs.jsx
+var React = require('react');
+var Paragraphs = React.createClass({
+  render: function() {
+    var paragraphs = ['one', 'two', 'three'];
+    paragraphs = paragraphs.map(function(paragraph, index) {
+      return <p key={index}>
+        {paragraph}
+      </p>;
+    });
+    return <div>
+      {paragraphs}
+    </div>;
+  }
+});
+module.exports = Paragraphs;
+```
+
+```JavaScript
+// index.jsx
+var React = require('react');
+var Paragraphs = require('./Paragraphs.jsx');
+React.render(
+  <Paragraphs />,
+  document.body
+);
+```
+
+**Exercise 4**: Render your unordered list via a component.
+
 
 
 # Answers
 
-1. Up to you—if it displayed as you expected on the screen, you pass!
-2. Something like:
+**Answer 1**. Up to you—if it displayed as you expected on the screen, you pass!
+
+**Answer 2**. Something like:
 
 ```JavaScript
 var item_one = <li>One</li>;
@@ -155,7 +254,7 @@ React.render(
   document.body
 );
 ```
-3. Something like:
+**Answer 3**. Something like:
 
 ```JavaScript
 var items = ['One', 'Two', 'Three'].map(function(item, key) {
@@ -167,6 +266,26 @@ var list = <ul>
 
 React.render(
   list,
+  document.body
+);
+```
+
+**Answer 4**. Something like:
+
+```JavaScript
+var List = React.createClass({
+  render: function() {
+    var items = ['One', 'Two', 'Three'].map(function(item, key) {
+      return <li key={key}>{item}</li>;
+    });
+    return <ul>
+      {items}
+    </ul>;
+  }
+});
+
+React.render(
+  <List />,
   document.body
 );
 ```
