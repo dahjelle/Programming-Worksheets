@@ -232,6 +232,141 @@ React.render(
 **Exercise 4**: Render your unordered list via a component.
 
 
+## Interacting with Your Components: State
+
+This has been interesting so far, but there isn't yet much that we could do with React that wouldn't have been done in plain old HTML or in the various HTML templating languages. (And, to be fair, React is far from the only way of doing what we'll be doing here, either.) Let's make a component with some interactivity!
+
+First, we need to introduce a concept of 'state'. State is a value that can change over time, and is local to the component. For instance, imagine that we have a `<Clock/>` component that displays an hour hand and a minute hand, representing the current time. The position of those hands would likely be state: they change over time, but no other component using the `<Clock/>` is likely to need or want to know that position. State allows us to keep such values local to a component.
+
+So how do we use state?
+
+```JavaScript
+var Stateful = React.createClass({
+  getInitialState: function() {
+    return {
+      backcolor: '#0000FF'
+    };
+  },
+  render: function() {
+    var divStyle = {
+      backgroundColor: this.state.backcolor,
+      color: '#FFFFFF'
+    };
+    return <div style={divStyle}>
+      Hello, world!
+    </div>;
+  }
+});
+
+React.render(
+  <Stateful />,
+  document.body
+);
+```
+
+First, notice that we added a second function to our React component: `getInitialState`. If you provide this function (and you should if you are using state), you should return a single object. The keys correspond to the names of the state variables you'll use, and the values are their initial values (which can change later). In this case, we are setting the `backcolor` state variable to a CSS color of `#0000FF` (a bright blue). While we only have a single state variable in this example, you can have as many as you need.
+
+Second—a brief digression. As mentioned earlier, JSX allows us to put JavaScript values inside our HTML tags. In the case of CSS styles, it does something additional: it will accept a JavaScript object that will get converted to the appropriate CSS string. There is [React documentation](https://facebook.github.io/react/tips/inline-styles.html) on this sort of thing, but accept it for now that `backgroundColor` affects the background color of an HTML element, and `color` affects the *text* color of an element when they are passed to the `style` attribute.
+
+Third, onward. So, in this case, we have an initial `state` with a `backcolor` of `#0000FF`. In the `render` function (or other functions we may create ourselves), we can access that `state` via `this.state.VARIABLE_NAME`—in this case, `this.state.backcolor`. We use `this.state.backcolor` to create a `divStyle` object, which we use to set the `style` of the div that we render.
+
+**BUT!** We still haven't made anything interactive? How can we do that?
+
+Before we change the state based on user interaction, let's explore how we can handle events initiated by the user. The basic mechanics are very similar to old-school HTML events: adding event handlers to our JSX tags. (And [React has documentation on the specifics of what events can be handled in JSX](https://facebook.github.io/react/docs/events.html).) So, for example, we can run a function when the mouse is clicked on our `<div/>`:
+
+```JavaScript
+var Events = React.createClass({
+  clickHandler: function() {
+    console.log('You got me!');
+  },
+  render: function() {
+    return <div onClick={this.clickHandler}>
+      Hello, world!
+    </div>;
+  }
+});
+
+React.render(
+  <Events />,
+  document.body
+);
+```
+
+In this case, we print to the `console` whenever the `<div/>` is clicked on. We attach an `onClick` event handler to the `<div>` JSX element, and that event handler is `this.clickHandler`, the `clickHandler` function we defined in the object given to `React.createClass`. The name of the handler function can be anything.
+
+While the React documentation as a complete list of events that can be handled, consider for now `onClick`, `onMouseOver`, `onMouseOut`.
+
+So how do we change our state based on user interaction? Glad you asked! Enter `this.stateState()`.
+
+```JavaScript
+var Stateful = React.createClass({
+  getInitialState: function() {
+    return {
+      backcolor: '#0000FF'
+    };
+  },
+  clickHandler: function() {
+    this.setState({
+      backcolor: '#FF0000'
+    });
+  },
+  render: function() {
+    var divStyle = {
+      backgroundColor: this.state.backcolor,
+      color: '#FFFFFF'
+    };
+    return <div style={divStyle} onClick={this.clickHandler}>
+      Hello, world!
+    </div>;
+  }
+});
+
+React.render(
+  <Stateful />,
+  document.body
+);
+```
+
+When `this.setState` is called, you pass an object whose keys are the state variables that you want to change, and the values are the corresponding new values. You can set as many or as few state variables as necessary for your application. When `this.setState` is called, it tells React: 'Hey, I have some new state. Can you please re-render me?' And React will call your `render` function again, this time referencing the new state.
+
+Note that you *cannot* call `this.setState` inside a `render` function!
+
+**Exercise 5**: Create a component whose background color changes when the mouse moves over it, and changes back when the mouse leaves.
+
+## Form Fields and State: Controlled and Uncontrolled
+
+Form fields (such as text input boxes) have an interesting property: if you set their `value` attribute inside a `render` function, that value **completely** controls the value of the text box—even when the user types inside of it! This is called a 'controlled' input element. This is actually very desirable in many applications—such as, for instance, only allowing certain characters to be typed in an input field. (If you don't directly set the `value` attribute, you get an 'uncontrolled' component, which is also useful.)
+
+The end result is that you need to use `this.setState` to keep the value of the text box updated while the user types, like this:
+
+```JavaScript
+var InputBox = React.createClass({
+  getInitialState: function() {
+    return {
+      text: 'Type in here!'
+    };
+  },
+  updateText: function(evt) {
+    this.setState({
+      text: evt.currentTarget.value
+    });
+  },
+  render: function() {
+    return <input type='text' value={this.state.text} onChange={this.updateText} />;
+  }
+});
+
+React.render(
+  <InputBox />,
+  document.body
+);
+```
+
+**Exercise 6**: Create an uncontrolled input box.
+
+**Exercise 7**: Modify the controlled input box example I gave you to (1) have no initial text and (2) prevent the user from typing the letter 'e'. (Hint: use the JavaScript `String.replace` function.)
+
+## Passing Values from One Component to Another: Props
 
 # Answers
 
@@ -286,6 +421,85 @@ var List = React.createClass({
 
 React.render(
   <List />,
+  document.body
+);
+```
+
+**Answer 5**. Something like:
+
+```JavaScript
+var blue = '#0000FF';
+var red = '#FF0000';
+
+var Stateful = React.createClass({
+  getInitialState: function() {
+    return {
+      backcolor: blue
+    };
+  },
+  inHandler: function() {
+    this.setState({
+      backcolor: red
+    });
+  },
+  outHandler: function() {
+     this.setState({
+      backcolor: blue
+    });
+  },
+  render: function() {
+    var divStyle = {
+      backgroundColor: this.state.backcolor,
+      color: '#FFFFFF'
+    };
+    return <div style={divStyle} onMouseOver={this.inHandler} onMouseOut={this.outHandler}>
+      Hello, world!
+    </div>;
+  }
+});
+
+React.render(
+  <Stateful />,
+  document.body
+);
+```
+
+**Answer 6**: Something like:
+
+```JavaScript
+var InputBox = React.createClass({
+  render: function() {
+    return <input type='text' />;
+  }
+});
+
+React.render(
+  <InputBox />,
+  document.body
+);
+```
+
+**Answer 7**: Something like:
+
+```JavaScript
+var InputBox = React.createClass({
+  getInitialState: function() {
+    return {
+      text: ''
+    };
+  },
+  updateText: function(evt) {
+    this.setState({
+      text: evt.currentTarget.value.replace('e', '')
+    });
+  },
+  render: function() {
+    return <input type='text' value={this.state.text} onChange={this.updateText} />;
+  }
+});
+
+React.render(
+  <InputBox />,
   document.body
 );
 ```
