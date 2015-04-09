@@ -4,7 +4,9 @@ This will provide a gradual implementation of the 'todo' application on [React's
 
 ## Boilerplate
 
-This assumes you have an `index.html` that includes both React and `index.js` (which we'll mention in a moment) and a `index.jsx` or similar that is getting compiled to the `index.js` file previously mentioned. We'll technically be using `browserify`, but `webpack` or similar should work fine.
+If you are just starting, I'd suggest using [JSBin](http://jsbin.com/tawaqaviyo/1/edit?js,console,output) to play around; you can learn React without having to install anything locally.
+
+If you want to develop locally, this assumes you have an `index.html` that includes both React and `index.js` (which we'll mention in a moment) and a `index.jsx` or similar that is getting compiled to the `index.js` file previously mentioned. We'll technically be using `browserify`, but `webpack` or similar should work fine.
 
 We don't discuss the preparation of those files in this tutorial.
 
@@ -13,7 +15,7 @@ We don't discuss the preparation of those files in this tutorial.
 To render HTML to the screen, use `React.render`:
 
 ```JavaScript
-var React = require('react'); // we'll assume this line is present for all future code snippets
+var React = require('react'); // we'll assume this line is present for all future code snippets; if is ONLY needed if you are using the browserify or webpack setup
 
 React.render(
   <p>Hello, world!</p>,
