@@ -298,7 +298,7 @@ In this case, we print to the `console` whenever the `<div/>` is clicked on. We 
 
 While the React documentation as a complete list of events that can be handled, consider for now `onClick`, `onMouseOver`, `onMouseOut`.
 
-So how do we change our state based on user interaction? Glad you asked! Enter `this.stateState()`.
+So how do we change our state based on user interaction? Glad you asked! Enter `this.setState()`.
 
 ```JavaScript
 var Stateful = React.createClass({
