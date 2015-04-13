@@ -276,11 +276,11 @@ React.render(
 
 ## Interacting with Your Components: State
 
-This has been interesting so far, but there isn't yet much that we could do with React that wouldn't have been done in plain old HTML or in the various HTML templating languages. (And, to be fair, React is far from the only way of doing what we'll be doing here, either.) Let's make a component with some interactivity!
+This has been interesting so far, but there isn't yet much that we could do with React that wouldn't have been done in plain old HTML or in the various HTML templating languages. (And, to be fair, React is far from the only way of doing what we'll be doing here, either.) But we want to move beyond just rendering HTML tags and create a user interface that's *interactive*. Let's make a component with some interactivity!
 
-First, we need to introduce a concept of 'state'. State is a value that can change over time, and is local to the component. For instance, imagine that we have a `<Clock/>` component that displays an hour hand and a minute hand, representing the current time. The position of those hands would likely be state: they change over time, but no other component using the `<Clock/>` is likely to need or want to know that position. State allows us to keep such values local to a component.
+First, we need to introduce the concept of 'state'. State is a value that can change over time, and is local to the component. For instance, imagine that we have a `<Clock/>` component that displays an hour hand and a minute hand, representing the current time. The position of those hands would likely be state: they change over time, but no other component using the `<Clock/>` is likely to need or want to know that position. State allows us to keep such values local to a component. Keeping changing states local - set apart for a certain component - will help us program in a modular way.
 
-So how do we use state?
+So how do we use state? See below and pay special attention to the `getInitialState` key.
 
 ```JavaScript
 var Stateful = React.createClass({
@@ -306,9 +306,9 @@ React.render(
 );
 ```
 
-First, notice that we added a second function to our React component: `getInitialState`. If you provide this function (and you should if you are using state), you should return a single object. The keys correspond to the names of the state variables you'll use, and the values are their initial values (which can change later). In this case, we are setting the `backcolor` state variable to a CSS color of `#0000FF` (a bright blue). While we only have a single state variable in this example, you can have as many as you need.
+First, notice that we added a second function to our React component as the value for `getInitialState`. If you provide this function (and you should if you are using state), you should return a single object. The keys correspond to the names of the state variables you'll use, and the values are their initial values (which can change later). In this case, we are setting the `backcolor` state variable to a CSS color of `#0000FF` (a bright blue). While we only have a single state variable in this example, you can have as many as you need.
 
-Second—a brief digression. As mentioned earlier, JSX allows us to put JavaScript values inside our JSX tags. In the case of CSS styles, it does something additional: it will accept a JavaScript object that will get converted to the appropriate CSS string. There is [React documentation](https://facebook.github.io/react/tips/inline-styles.html) on this sort of thing, but accept it for now that `backgroundColor` affects the background color of an HTML element, and `color` affects the *text* color of an element when they are passed to the `style` attribute.
+Second—a brief digression. As mentioned earlier, JSX allows us to put JavaScript values inside our JSX tags. In the case of CSS styles, it does something additional: it will accept a JavaScript object that will get converted to the appropriate CSS string. There is [React documentation](https://facebook.github.io/react/tips/inline-styles.html) on this sort of thing, but accept it for now that `backgroundColor` affects the background color of an HTML element, and `color` affects the *text* color of an element when they are passed to the `style` attribute of an HTML tag.
 
 Third, onward. So, in this case, we have an initial `state` with a `backcolor` of `#0000FF`. In the `render` function (or other functions we may create ourselves), we can access that `state` via `this.state.VARIABLE_NAME`—in this case, `this.state.backcolor`. We use `this.state.backcolor` to create a `divStyle` object, which we use to set the `style` of the div that we render.
 
@@ -334,11 +334,16 @@ React.render(
 );
 ```
 
-In this case, we print to the `console` whenever the `<div/>` is clicked on. We attach an `onClick` event handler to the `<div>` JSX element, and that event handler is `this.clickHandler`, the `clickHandler` function we defined in the object given to `React.createClass`. The name of the handler function can be anything.
+In this case, we print to the `console` whenever the `<div/>` is clicked on. We attach an `onClick` event handler to the `<div>` JSX element, and that event handler is `this.clickHandler`, the `clickHandler` function we defined in the object given to `React.createClass`. The name of the handler function can be anything (clickHandler, stateChanger, userClick ... whatever you want).
 
-While the React documentation as a complete list of events that can be handled, consider for now `onClick`, `onMouseOver`, `onMouseOut`.
+While the React documentation as a complete list of events that can be handled, consider for now `onClick`, `onMouseOver`, and `onMouseOut`.
 
-So how do we change our state based on user interaction? Glad you asked! Enter `this.setState()`.
+Let's recap.
+1. We can create an initial, changeable state for our component by assigning a function to `getInitialState` (like `backcolor: '#0000FF'`).
+2. We can use that state in our `render` with `this.state.VARIABLE` (which is `this.state.backcolor` in our example).
+3. We can record what the user is doing with event handlers - `onClick`, `onMouseOver`, `onMouseOut` and such - and respond by calling functions.
+
+So how do we change our state based on user interaction? Glad you asked! Enter the puzzle piece that brings all this together... `this.setState()`.
 
 ```JavaScript
 var Stateful = React.createClass({
@@ -348,8 +353,8 @@ var Stateful = React.createClass({
     };
   },
   clickHandler: function() {
-    this.setState({
-      backcolor: '#FF0000'
+    this.setState({  // Here's where the interactivity comes to life
+      backcolor: '#DD3131'
     });
   },
   render: function() {
@@ -369,11 +374,16 @@ React.render(
 );
 ```
 
-When `this.setState` is called, you pass an object whose keys are the state variables that you want to change, and the values are the corresponding new values. You can set as many or as few state variables as necessary for your application. When `this.setState` is called, it tells React: 'Hey, I have some new state. Can you please re-render me?' And React will call your `render` function again, this time referencing the new state.
+When `this.setState` is called by your `clickHandler` function, you pass an object whose keys are the state variables that you want to change, and the values are the corresponding new values you want to see in the browser. You can set as many or as few state variables as necessary for to make the interactive changes you want in your application. 
 
-Note that you *cannot* call `this.setState` inside a `render` function!
+When you call `this.setState`, it tells React: 'Hey, I have some new state. Can you please re-render me?' And React will call your `render` function again, this time referencing the new state.
+
+Note that you *cannot* call `this.setState` inside a `render` function! That would be putting the cart before the horse. It's `this.setState` that
+1. assigns the new values to `state` and
+2. reruns `render` to display the changes.
 
 **Exercise 5**: Create a component whose background color changes when the mouse moves over it, and changes back when the mouse leaves.
+**Extra Credit**: Create a component that experiences three different changes in appearance when you click on it.
 
 ## Form Fields and State: Controlled and Uncontrolled
 
