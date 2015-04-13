@@ -15,7 +15,7 @@ We don't discuss the preparation of those files in this tutorial.
 To render HTML to the screen, use `React.render`:
 
 ```JavaScript
-var React = require('react'); // we'll assume this line is present for all future code snippets; if is ONLY needed if you are using the browserify or webpack setup
+var React = require('react'); // we'll assume this line is present for all future code snippets; it is ONLY needed if you are using the browserify or webpack setup
 
 React.render(
   <p>Hello, world!</p>,
@@ -23,9 +23,9 @@ React.render(
 );
 ```
 
-`React.render` takes the "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page. (The differences between HTML and JSX are [documented on the React site](https://facebook.github.io/react/docs/jsx-gotchas.html).)
+`React.render` takes the Reactjs or "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page. (The differences between HTML and JSX are [documented on the React site](https://facebook.github.io/react/docs/jsx-gotchas.html).)
 
-JSX can also be assigned to variables.† In other words, we can refactor the above example to:
+JSX can be assigned to variables.† In other words, we can refactor the above example to:
 
 ```JavaScript
 var contents = <p>Hello, world!</p>;
@@ -36,7 +36,7 @@ React.render(
 );
 ```
 
-You can also nest JSX tags, just like in HTML.
+You can nest JSX tags, just like in HTML.
 
 ```JavaScript
 var contents = <p>Hello, <small>small</small> world!</p>;
@@ -53,11 +53,11 @@ React.render(
 
 ## Combining JSX and JavaScript
 
-You can also grab values from JavaScript and place them in your HTML. This is done by surrounding the JavaScript expression in `{}`. For instance:
+You can use React to grab JavaScript values and place them in your HTML. This is done by surrounding the JavaScript expression in {}. For instance:
 
 ```JavaScript
-var name = 'Samuel';
-var contents = <p>Hello, <b>{name}</b>!</p>;
+var name = 'Samuel';  // Regular JavaScript variable
+var contents = <p>Hello, <b>{name}</b>!</p>;  // Use React to drop the variable into your HTML using '{}'  
 
 React.render(
   contents,
@@ -65,12 +65,12 @@ React.render(
 );
 ```
 
-The JavaScript values can also be JavaScript expressions or other React elements.
+The JavaScript values can be either regular JavaScript expressions or other React elements.
 
 ```JavaScript
-var name = 'Samuel';
-var bold_name = <b>{name + ' the person'}</b>;
-var contents = <p>Hello, {bold_name}!</p>;
+var name = 'Bob';
+var bold_name = <b>{name + ' - the man, the myth, the legend'}</b>;
+var contents = <p>It's time to meet... {bold_name}.</p>;
 
 React.render(
   contents,
@@ -78,11 +78,15 @@ React.render(
 );
 ```
 
-You can also use JavaScript expressions as attribute values in the HTML tags.
+You can use JavaScript expressions as attribute values in the HTML tags.
 
 ```JavaScript
 var name = 'Samuel';
-var contents = <input value={name} />; // you won't be able to edit this field; we'll discuss that later
+var contents = 
+  <p>
+    <span>Name Box: </span>
+    <input value={name} />
+  </p>; // You will not be able to edit the input field. We will discuss that later. 
 
 React.render(
   contents,
@@ -90,7 +94,31 @@ React.render(
 );
 ```
 
-**Exercise 2**: Render an unordered list `<ul>` of several items using JSX and JavaScript variables.
+**Note**: You need to define your React variable using one HTML element with all other elements wrapped inside of it. So, for the above example, it wouldn't work to add another `<p>...</p>` to the beginning; you would need to wrap the whole thing in `<div>...</div>`, `<span>...</span>`, etc.
+
+```JavaScript
+//WRONG
+var name = 'Samuel';
+var contents = 
+  <p>Put your name below</p>
+  <p>
+    <span>Name Box: </span>
+    <input value={name} />
+  </p>;
+
+//RIGHT
+var name = 'Samuel';
+var contents = 
+  <div>
+    <p>Put your name below.</p>
+    <p>
+      <span>Name Box: </span>
+      <input value={name} />
+    </p>
+  </div>; //Notice the opening <div> at the beginning of the contents variable and the closing </div> at the end of it.
+```
+
+**Exercise 2**: Render an unordered list `<ul>` of several items using JavaScript variables and JSX.
 
 ## Arrays in JSX
 
@@ -138,9 +166,11 @@ React.render(
 
 ## Embrace Modularity: Basic React Components
 
-While JSX works fairly nicely (and can be combined with all the logic ability of JavaScript to do some interesting things), it'd be nice if we could package up bits of functionality into modules or components. React lets us do this as well—basically allowing us to add our own HTML tags to the browser!
+Programming in a modular way - i.e. packaging bits of functionality into distinct components or modules - tends to make our code more eloquent, flexible and maintainable. 
 
-For instance, let's package up the paragraphs from previously into a React component.
+So far, we've seen how JSX can be combined with all the logic ability of JavaScript to do some interesting things. It'd be nice now if we could package up pieces of JSX functionality into unique components. React lets us do this as well—basically allowing us to add our own unique HTML tags to the browser!
+
+For instance, let's package up the previous paragraphs into a React component.
 
 ```JavaScript
 var Paragraphs = React.createClass({
@@ -163,11 +193,17 @@ React.render(
 );
 ```
 
-In this case, we've created a component called `Paragraphs` (traditionally starting with a capital letter) with the `React.createClass` function. This function accepts an object, with a single required key of `render` whose value must be a function that returns a single JSX element (such as could be pass to `React.render`).
+In this case, we've created a component called `Paragraphs` (traditionally starting with a capital letter) with the `React.createClass` function. This function accepts an object, with a single required key of `render`. The `render` key has to be a function that will `return` JSX.
 
 Once we create a component, we can use it in JSX directly, as if it was an HTML tag.
 
-We can use a component inside other components.
+So in the example above...
+First, we create the `Paragraphs` component with the `React.createClass` function. 
+Next, in the `render` key of `createClass`, we use JavaScript and JSX to define our variables as we did previously.
+We then `return` the output we want for our `Paragraphs` component.
+Now we can call `<Paragraphs />` as a unique HTML tag whenever we need it.
+
+We can call our new `Paragraphs` component directly in `React.render`, or we can use it inside other components.
 
 ```JavaScript
 var Paragraphs = React.createClass({
@@ -200,10 +236,12 @@ React.render(
 );
 ```
 
+Above, we're using our `Paragraphs` component inside of our new `MoreOfThem` component. In `MoreOfThem` look at what's happening in the `render` key. We're returning the `Paragraphs` key three times, so when we call `MoreOfThem` in `React.render`, `Paragraphs` is repeated three times.
+
 If you are using a build tool like `browserify`, you can also stick your components in other files.
 
 ```JavaScript
-// Paragraphs.jsx
+// paragraphs.jsx
 var React = require('react');
 var Paragraphs = React.createClass({
   render: function() {
@@ -221,10 +259,12 @@ var Paragraphs = React.createClass({
 module.exports = Paragraphs;
 ```
 
+The `module.exports` assignment makes your `Paragraphs` component available in other JSX files when you require your `paragraphs.jsx` file.
+
 ```JavaScript
 // index.jsx
 var React = require('react');
-var Paragraphs = require('./Paragraphs.jsx');
+var Paragraphs = require('./paragraphs.jsx');
 React.render(
   <Paragraphs />,
   document.body
@@ -395,7 +435,7 @@ React.render(
 );
 ```
 
-Here, we added a attribute to the `<Paragraphs>` JSX tag to pass the paragraph data to the component. Within the `render` method, we can access the data as `this.props.text` (where the label in `this.props.LABEL` corresponds to the attribute name in the JSX tag). You can have as many `props` as needed in a component, and [you can also validate that a component has the `props` you expect](https://facebook.github.io/react/docs/reusable-components.html).
+Here, we added a attribute to the `<Paragraphs>` JSX tag to pass the paragraph data to the component. Within the `render` method, we can access the data as `this.props.text` (where the label in `this.props.LABEL` corresponds to the attribute name in the JSX tag). You can have as many `props` as needed in a component, and [you can validate that a component has the `props` you expect](https://facebook.github.io/react/docs/reusable-components.html).
 
 Note what this allows you to do: you can now create components that consume state from other components. For instance, here's an example that will add a new paragraph on each click.
 
