@@ -23,7 +23,7 @@ React.render(
 );
 ```
 
-`React.render` takes the Reactjs or "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page. (The differences between HTML and JSX are [documented on the React site](https://facebook.github.io/react/docs/jsx-gotchas.html).)
+`React.render` takes the "JSX" (an HTML-like language that lives in your JavaScript) that you pass it as the *first* parameter, and fills the HTML element you give it as the *second* parameter with the result. In this case, putting the `<p>` inside the `<body>` tag on your page. (The differences between HTML and JSX are [documented on the React site](https://facebook.github.io/react/docs/jsx-gotchas.html).)
 
 JSX can be assigned to variables.† In other words, we can refactor the above example to:
 
@@ -53,11 +53,11 @@ React.render(
 
 ## Combining JSX and JavaScript
 
-You can use React to grab JavaScript values and place them in your HTML. This is done by surrounding the JavaScript expression in {}. For instance:
+You can grab JavaScript values and place them in your JSX. This is done by surrounding the JavaScript expression in {}. For instance:
 
 ```JavaScript
 var name = 'Samuel';  // Regular JavaScript variable
-var contents = <p>Hello, <b>{name}</b>!</p>;  // Use React to drop the variable into your HTML using '{}'  
+var contents = <p>Hello, <b>{name}</b>!</p>;  // drop the variable into your HTML using '{}'  
 
 React.render(
   contents,
@@ -70,7 +70,7 @@ The JavaScript values can be either regular JavaScript expressions or other Reac
 ```JavaScript
 var name = 'Bob';
 var bold_name = <b>{name + ' - the man, the myth, the legend'}</b>;
-var contents = <p>It's time to meet... {bold_name}.</p>;
+var contents = <p>It's time to meet…{bold_name}.</p>;
 
 React.render(
   contents,
@@ -78,15 +78,15 @@ React.render(
 );
 ```
 
-You can use JavaScript expressions as attribute values in the HTML tags.
+You can use JavaScript expressions as attribute values in the JSX tags.
 
 ```JavaScript
 var name = 'Samuel';
-var contents = 
+var contents =
   <p>
     <span>Name Box: </span>
     <input value={name} />
-  </p>; // You will not be able to edit the input field. We will discuss that later. 
+  </p>; // You will not be able to edit the input field's contents in the browser when this renders. We will discuss that later.
 
 React.render(
   contents,
@@ -94,12 +94,12 @@ React.render(
 );
 ```
 
-**Note**: You need to define your React variable using one HTML element with all other elements wrapped inside of it. So, for the above example, it wouldn't work to add another `<p>...</p>` to the beginning; you would need to wrap the whole thing in `<div>...</div>`, `<span>...</span>`, etc.
+**Note**: JSX always requires a single parent element with all other elements wrapped inside of it. So, for the above example, it wouldn't work to add another `<p>...</p>` to the beginning; you would need to wrap the whole thing in `<div>...</div>`, `<span>...</span>`, etc.
 
 ```JavaScript
 //WRONG
 var name = 'Samuel';
-var contents = 
+var contents =
   <p>Put your name below</p>
   <p>
     <span>Name Box: </span>
@@ -108,7 +108,7 @@ var contents =
 
 //RIGHT
 var name = 'Samuel';
-var contents = 
+var contents =
   <div>
     <p>Put your name below.</p>
     <p>
@@ -166,7 +166,7 @@ React.render(
 
 ## Embrace Modularity: Basic React Components
 
-Programming in a modular way - i.e. packaging bits of functionality into distinct components or modules - tends to make our code more eloquent, flexible and maintainable. 
+Programming in a modular way—i.e. packaging bits of functionality into distinct components or modules—tends to make our code more eloquent, flexible and maintainable.
 
 So far, we've seen how JSX can be combined with all the logic ability of JavaScript to do some interesting things. It'd be nice now if we could package up pieces of JSX functionality into unique components. React lets us do this as well—basically allowing us to add our own unique HTML tags to the browser!
 
@@ -198,7 +198,7 @@ In this case, we've created a component called `Paragraphs` (traditionally start
 Once we create a component, we can use it in JSX directly, as if it was an HTML tag.
 
 So in the example above...
-First, we create the `Paragraphs` component with the `React.createClass` function. 
+First, we create the `Paragraphs` component with the `React.createClass` function.
 Next, in the `render` key of `createClass`, we use JavaScript and JSX to define our variables as we did previously.
 We then `return` the output we want for our `Paragraphs` component.
 Now we can call `<Paragraphs />` as a unique HTML tag whenever we need it.
@@ -236,7 +236,7 @@ React.render(
 );
 ```
 
-Above, we're using our `Paragraphs` component inside of our new `MoreOfThem` component. In `MoreOfThem` look at what's happening in the `render` key. We're returning the `Paragraphs` key three times, so when we call `MoreOfThem` in `React.render`, `Paragraphs` is repeated three times.
+Above, we're using our `Paragraphs` component inside of our new `MoreOfThem` component. In `MoreOfThem`, look at what's happening in the `render` key. We're returning the `Paragraphs` key three times, so when we call `MoreOfThem` in `React.render`, `Paragraphs` is repeated three times.
 
 If you are using a build tool like `browserify`, you can also stick your components in other files.
 
@@ -308,7 +308,7 @@ React.render(
 
 First, notice that we added a second function to our React component: `getInitialState`. If you provide this function (and you should if you are using state), you should return a single object. The keys correspond to the names of the state variables you'll use, and the values are their initial values (which can change later). In this case, we are setting the `backcolor` state variable to a CSS color of `#0000FF` (a bright blue). While we only have a single state variable in this example, you can have as many as you need.
 
-Second—a brief digression. As mentioned earlier, JSX allows us to put JavaScript values inside our HTML tags. In the case of CSS styles, it does something additional: it will accept a JavaScript object that will get converted to the appropriate CSS string. There is [React documentation](https://facebook.github.io/react/tips/inline-styles.html) on this sort of thing, but accept it for now that `backgroundColor` affects the background color of an HTML element, and `color` affects the *text* color of an element when they are passed to the `style` attribute.
+Second—a brief digression. As mentioned earlier, JSX allows us to put JavaScript values inside our JSX tags. In the case of CSS styles, it does something additional: it will accept a JavaScript object that will get converted to the appropriate CSS string. There is [React documentation](https://facebook.github.io/react/tips/inline-styles.html) on this sort of thing, but accept it for now that `backgroundColor` affects the background color of an HTML element, and `color` affects the *text* color of an element when they are passed to the `style` attribute.
 
 Third, onward. So, in this case, we have an initial `state` with a `backcolor` of `#0000FF`. In the `render` function (or other functions we may create ourselves), we can access that `state` via `this.state.VARIABLE_NAME`—in this case, `this.state.backcolor`. We use `this.state.backcolor` to create a `divStyle` object, which we use to set the `style` of the div that we render.
 
