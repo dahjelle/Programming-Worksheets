@@ -149,7 +149,18 @@
     keysAndValues[ keys.field2 ] = values.field2value;
     keysAndValues[ keys.field3 ] = values.field3value;
     ```
+    
+     **or**
 
+    ```
+    var keysAndValues = {};
+    [1, 2, 3].forEach(function(number) {
+        var key = keys["field" + number];
+        var value = values["field" + number + "value"];
+        keysAndValues[key] = value;
+    }); 
+    ```
+    
 8. Samples
 
     ```
