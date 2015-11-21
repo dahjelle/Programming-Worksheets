@@ -422,6 +422,20 @@ React.render(
 
 ## Passing Values from One Component to Another: Props
 
+Simple Example
+```JavaScript
+var HelloMessage = React.createClass({
+  render: function() {
+    return <div>Hello {this.props.name}</div>; //Using the props passed value ("John")
+  }
+});
+
+React.render(
+  <HelloMessage name="John" />,  //The passed value to the HelloMessage class. 
+  document.getElementById('container')
+);
+```
+More Complex Example.
 Since the state of one component might end up being useful in another component, React also allows you to pass data from one component to a child component using `props`. Let's use the `<Paragraphs/>` from earlier as an example.
 
 ```JavaScript
