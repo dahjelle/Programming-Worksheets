@@ -349,20 +349,20 @@ So how do we change our state based on user interaction? Glad you asked! Enter t
 var Stateful = React.createClass({
   getInitialState: function() {
     return {
-      backcolor: '#0000FF'
+      backcolor: '#0000FF' //blue
     };
   },
   clickHandler: function() {
-    this.setState({  // Here's where the interactivity comes to life
+    this.setState({  // Here's where the interactivity comes to life and the backcolor is changed. 
       backcolor: '#DD3131'
     });
   },
   render: function() {
     var divStyle = {
-      backgroundColor: this.state.backcolor,
-      color: '#FFFFFF'
+      backgroundColor: this.state.backcolor, //this.state is empty initially {}. it grabs getInitialState setting backcolor to blue above. So now this.state has {backcolor: '#00000FF'}. The render function always starts with the getInitialState to see what the component is made of. It now sets the background color to the backcolor. 
+      color: '#FFFFFF' // It then adds the color (White) for the text to the divStyle. 
     };
-    return <div style={divStyle} onClick={this.clickHandler}>
+    return <div style={divStyle} onClick={this.clickHandler}> // This executes the clickHandler function above to change the color on the backcolor. It also attaches the click handler on the first run through the render so the user can interact with it. 
       Hello, world!
     </div>;
   }
