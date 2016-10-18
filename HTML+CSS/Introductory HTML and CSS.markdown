@@ -65,6 +65,54 @@ Browsers will make further requests depending on the content of the page, but al
 - As much as possible, don't add tags just to change the appearance if it doesn't change the meaning.
 - [Mozilla has a nice reference of all the available tags.](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)
 
+#### Why "Meaning of the document"?
+
+Imagine you have some text. Using this section as an example, the raw text might look like this (abbreviated):
+
+```
+Tags (HTML)
+
+Theory
+
+Used to indicate…
+
+Practice
+
+Tags have parent-children relationship…
+```
+
+It's pretty difficult to navigate what those different bits of text are doing. How is it organized? If you were writing by hand, you might use larger and smaller writing, underlining, or different colors to communicate the organization and meaning. If using a word processor, you'd probably use some formatting features. If you only had plain-text, you might use something like Markdown:
+
+```
+# Tags (HTML)
+
+## Theory
+
+- Used to indicate…
+
+## Practice
+
+- Tags have parent-children relationship…
+```
+
+HTML is just another method of trying to communicate that structure, though primarily for **computer** consumption rather tha human consumption. A web  browser takes that *meaning* and uses its default styles to show it to the user in a way that makes sense to humans.
+
+```
+<h1>Tags (HTML)</h1>
+
+<h2Theory</h2>
+
+<ul>
+  <li>Used to indicate…</li>
+</ul>
+
+<h2>Practice</h2>
+
+<ul>
+  <li>Tags have parent-children relationship…</li>
+</ul>
+```
+
 ### Practice
 
 - Tags have **parent-children relationship**, and structure something like a family tree.
