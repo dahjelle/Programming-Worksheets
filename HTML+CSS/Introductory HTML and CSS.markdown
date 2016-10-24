@@ -163,7 +163,85 @@ Note that the `<head>` tag is has CSS `display: none` by default…but even that
 
 ## Selectors (CSS)
 
-> ### TODO!!
+The selector points to the HTML element you want to style. CSS selectors are used to "find" (or select) HTML elements based on their element name, id, class, attribute, and more.
+
+### Element/type selectors
+The element selector selects elements based on the element name. For instance, a CSS rule like the following:
+
+```
+h1 {
+  color: red;
+}
+```
+
+would style all the `<h1>` tags in the document red.
+
+### ID Selectors
+The ID selector uses the id attribute of an HTML element to select a specific element.
+
+```
+#home-content {
+  color: red;
+}
+```
+
+would style `<p id="home-content">red</p>` red, but not `<p id="content">blue</p>`.
+
+In practice, I've found that class selectors can do everything an ID selector can do, but are not limited to the one-unique-ID-per-page that ID selectors are.
+
+### Class Selectors
+
+The class selector selects elements with a specific class attribute. Since an element can have many classes, the class selector only looks for a single class attribute. (Note that you can combine selectors…see below.)
+
+```
+.red {
+  color: red;
+}
+```
+
+Would style `<p class="red yellow"></p>` and `<div class="red"></div>`, but not `<div id="red"></div>`.
+
+### Combining Selectors
+
+You can combine selectors. For instance, a selector of `p#id.classone.classtwo` would only apply to `<p>` tags with an ID of `id` and **both** `classone` and `classtwo` in the list of classes.
+
+### Group Selectors
+
+Sometimes, you want the same styling to apply to a group of selectors. Use a comma to separate the selectors before the declaration block.
+
+```
+h1, h2, h3 {
+  color: blue;
+}
+```
+
+### Universal Selector
+
+You can select **every** tag with `*`. Used rarely due to inheritance.
+
+### Descendant Selectors
+
+Putting a space between selectors means that the second tag must be a child, grand-child, great-grant-child, etc. of the first.
+
+For instance, `.content p` would select `p` tags somewhere inside a tag with a `content` class, but not elsewhere.
+
+Descendant selectors tend to be heavily used.
+
+### Attribute Selectors
+
+Attribute selectors allow you to pick an element based on its attribute. For instance, to style all `<input type="text" />` tags, you could use the rule `input[type="text]`.
+
+### Other Selectors
+
+There are selectors like `:hover`, etc., that you can add to a selector to let a style apply only when the mouse is over the element.
+
+CSS also includes adjacent sibling selectors (`A + B`), general sibling selectors (`A ~ B`), and child selectors (`A > B`), but I've used those less. (With the exception of child selectors?)
+
+There are even pseudo-elements, like `::after` and `::before`, but those are outside the scope of this tutorial.
+
+### References
+
+[Mozilla's MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference#Selectors) has some good information on selectors, as well as does [jQuery](https://api.jquery.com/category/selectors/). Be aware that the jQuery list name contain a few options that are not available in CSS or just not widely supported in browsers yet.
 
 ## Styles (CSS)
 
