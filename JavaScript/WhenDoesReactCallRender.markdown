@@ -3,7 +3,7 @@
 ## Summary of guidelines
 
 1. Keep your `render` function as fast as possible. You can do lots of computation here, but it isn't the place for computationally-heavy processes like indexing of something.
-2. Extend `PureComponent` instead of `Component` if you can. This will do a [shallow comparison]() of props and state, and **only** call `render` if they are different. This may require you to design `props` or `state` in a way that complies.
+2. Extend `PureComponent` instead of `Component` if you can. This will do a [shallow comparison](./EqualityOfObjectsAndArraysInJavaScript.markdown) of props and state, and **only** call `render` if they are different. This may require you to design `props` or `state` in a way that complies.
 3. Use `shouldComponentUpdate(nextProps, nextState)`  to do the comparison of `props` and `state` yourself (for instance, if they are more complicated than the shallow comparison of `PureComponent` would allow) to avoid re-rendering. Be careful, though, that your check doesn't take more time than just `render`ing would.
 
 ## When Does React Call Render?
