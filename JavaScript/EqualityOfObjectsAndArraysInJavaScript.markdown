@@ -1,6 +1,6 @@
 # Equality of Objects and Arrays in JavaScript
 
-Related to the question of [reference and value in calling functions](./PassByReferenceAndValue.markdown) is the question of equality: when are two values `===` to each other? (I'm restricting myself to `===` in JavaScript to simplify things a bit; [you can read up the rules if you want](https://dorey.github.io/JavaScript-Equality-Table/).)
+Related to the question of [reference and value in calling functions](./PassByReferenceandValue.markdown) is the question of equality: when are two values `===` to each other? (I'm restricting myself to `===` in JavaScript to simplify things a bit; [you can read up the rules if you want](https://dorey.github.io/JavaScript-Equality-Table/).)
 
 ```javascript
 1 === 1; // true
